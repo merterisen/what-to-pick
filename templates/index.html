@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şampiyon Öneri Sistemi</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        #suggestions {
+            list-style: none;
+            padding: 0;
+        }
+
+        #suggestions li {
+            margin-bottom: 8px;
+            background-color: #f8f9fa;
+            padding: 8px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>What To Pick?</h1>
+        <form id="championForm" method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.champ1.label }} {{ form.champ1() }}
+            </div>
+            <div class="form-group">
+                {{ form.champ2.label }} {{ form.champ2() }}
+            </div>
+            <div class="form-group">
+                {{ form.champ3.label }} {{ form.champ3() }}
+            </div>
+            <div class="form-group">
+                {{ form.champ4.label }} {{ form.champ4() }}
+            </div>
+            <div class="form-group">
+                {{ form.champ5.label }} {{ form.champ5() }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Önerileri Al</button>
+            <button type="button" class="btn btn-secondary" onclick="resetForm()">Formu Sıfırla</button>
+        </form>
+
+        {% if explanation %}
+            <h2>Açıklama</h2>
+            <p>{{ explanation|safe }}</p>
+        {% endif %}
+
+        {% if suggestions %}
+            <h2>Önerilen Şampiyonlar</h2>
+            <ul id="suggestions">
+                {% for champ in suggestions %}
+                    <li>{{ champ }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if error %}
+            <p id="error" class="text-danger">{{ error }}</p>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function resetForm() {
+            document.getElementById("championForm").reset();
+            let selects = document.querySelectorAll("#championForm select");
+            selects.forEach(select => {
+                select.selectedIndex = 0;
+            });
+
+            let suggestions = document.getElementById("suggestions");
+            if (suggestions) {
+                suggestions.innerHTML = "";
+            }
+            let error = document.getElementById("error");
+            if (error) {
+                error.innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>
